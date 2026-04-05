@@ -1,23 +1,27 @@
 function scanOrders() {
-    let amount = parseInt(document.getElementById("targetAmount").value);
+    let target = parseInt(document.getElementById("targetAmount").value);
 
-    let elements = document.querySelectorAll("div");
+    let elements = document.querySelectorAll("*");
 
     elements.forEach(el => {
-        let text = el.innerText;
-        if (!text) return;
+        if (!el.innerText) return;
 
-        let match = text.match(/₹\s?\d+/);
+        let match = el.innerText.match(/^₹\s?\d+/);
         if (!match) return;
 
-        let price = parseInt(match[0].replace("₹",""));
+        let price = parseInt(match[0].replace("₹", "").trim());
 
-        el.style.border = "";
-        el.style.background = "";
+        if (el.innerText.length > 10) return;
 
-        if (price === amount) {
-            el.style.border = "2px solid blue";
-            el.style.background = "#e6f0ff";
+        let card = el.closest("div");
+        if (!card) return;
+
+        card.style.border = "";
+        card.style.background = "";
+
+        if (price === target) {
+            card.style.border = "2px solid blue";
+            card.style.background = "#e6f0ff";
 
             console.log("🎯 Found:", price);
 
